@@ -50,3 +50,13 @@ dependencies {
     compile("mysql:mysql-connector-java")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
 }
+
+//Testco
+apply plugin: 'jacoco'
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        html.enabled true
+        html.destination "${buildDir}/reports/jacoco/index.html"
+    }
+}
