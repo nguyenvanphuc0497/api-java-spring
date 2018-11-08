@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 class UserAccountController : BaseController() {
 
     @GetMapping("/user")
-    internal fun viewAll() = userAccountDAO.view()
+    internal fun viewAll() = UserAccountResponse(userAccountDAO.view())
 
     @GetMapping("/user/{idUser}")
     fun viewByIdUser(@PathVariable idUser: Int) = userAccountDAO.viewByIdUser(idUser)

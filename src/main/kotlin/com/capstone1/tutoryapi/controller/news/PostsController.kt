@@ -11,5 +11,6 @@ import org.springframework.web.bind.annotation.RestController
 class PostsController : BaseController() {
 
     @GetMapping("/post")
-    internal fun viewPost() = postsDAO.viewPost()
+    internal fun viewPost() = PostsResponse(postsDAO.viewPost().toList())
+
 }

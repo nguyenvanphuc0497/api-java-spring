@@ -29,5 +29,5 @@ class TypeUserController : BaseController() {
     }
 
     @GetMapping("/type")
-    fun view() = typeUserDAO.view()
+    fun view() = TypeUserResponse(typeUserDAO.view())
 }
