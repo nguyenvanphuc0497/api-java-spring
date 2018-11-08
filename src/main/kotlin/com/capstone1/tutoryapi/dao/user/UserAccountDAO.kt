@@ -1,21 +1,15 @@
-package com.capstone1.tutoryapi.dao
+package com.capstone1.tutoryapi.dao.user
 
+import com.capstone1.tutoryapi.dao.BaseDAO
 import com.capstone1.tutoryapi.entities.user.UserAccount
 import com.capstone1.tutoryapi.entities.user.UserAccountMapper
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Transactional
 
 /**
  * Created by Nguyen Van Phuc on 11/7/18
  */
 @Repository
-@Transactional
-class UserAccountDAO {
-
-    @Autowired
-    private lateinit var jdbcTemplate: JdbcTemplate
+class UserAccountDAO : BaseDAO() {
 
     internal fun view(): List<UserAccount> = jdbcTemplate.query(
             "SELECT * FROM USER_ACCOUNT",

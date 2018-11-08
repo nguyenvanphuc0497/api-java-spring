@@ -1,11 +1,13 @@
-package com.capstone1.tutoryapi.controller
+package com.capstone1.tutoryapi.controller.user
 
-import com.capstone1.tutoryapi.dao.TypeUserDAO
+import com.capstone1.tutoryapi.controller.BaseController
 import com.capstone1.tutoryapi.entities.user.TypeUser
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 import java.io.IOException
 
 
@@ -13,12 +15,9 @@ import java.io.IOException
  * Created by Nguyen Van Phuc on 11/6/18
  */
 @RestController
-@RequestMapping("/api/v0/type")
-class TypeUserController {
-    @Autowired
-    private lateinit var typeUserDAO: TypeUserDAO
+class TypeUserController : BaseController() {
 
-    @PostMapping("/", consumes = ["application/json"])
+    @PostMapping("/type", consumes = ["application/json"])
     fun add(@RequestBody body: Map<String, String>): ResponseEntity<String> {
         try {
             typeUserDAO.save(TypeUser(body["ID_TYPE"], body["TYPE_NAME"]))
@@ -29,6 +28,6 @@ class TypeUserController {
         }
     }
 
-    @GetMapping("/")
+    @GetMapping("/type")
     fun view() = typeUserDAO.view()
 }
