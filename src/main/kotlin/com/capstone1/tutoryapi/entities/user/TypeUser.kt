@@ -1,4 +1,4 @@
-package com.capstone1.tutoryapi.entities
+package com.capstone1.tutoryapi.entities.user
 
 /**
  * Created by Nguyen Van Phuc on 11/6/18

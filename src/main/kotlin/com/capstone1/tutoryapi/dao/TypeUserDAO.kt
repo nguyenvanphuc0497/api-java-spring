@@ -1,7 +1,7 @@
 package com.capstone1.tutoryapi.dao
 
-import com.capstone1.tutoryapi.entities.TypeUser
-import com.capstone1.tutoryapi.entities.TypeUserMapper
+import com.capstone1.tutoryapi.entities.user.TypeUser
+import com.capstone1.tutoryapi.entities.user.TypeUserMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository

@@ -1,5 +1,6 @@
-package com.capstone1.tutoryapi.entities
+package com.capstone1.tutoryapi.entities.user
 
+import com.capstone1.tutoryapi.entities.user.TypeUser
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet
 

@@ -1,7 +1,7 @@
 package com.capstone1.tutoryapi.controller
 
 import com.capstone1.tutoryapi.dao.TypeUserDAO
-import com.capstone1.tutoryapi.entities.TypeUser
+import com.capstone1.tutoryapi.entities.user.TypeUser
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
