@@ -6,8 +6,8 @@ import java.sql.ResultSet
 /**
  * Created by Nguyen Van Phuc on 11/8/18
  */
-class NewsMapper : RowMapper<News> {
-    override fun mapRow(rs: ResultSet, rowNum: Int): News? = News(rs.getString("NEWS_ID"),
+class PostMapper : RowMapper<Post> {
+    override fun mapRow(rs: ResultSet, rowNum: Int): Post? = Post(rs.getString("NEWS_ID"),
             rs.getString("COVER_NEWS"),
             rs.getString("DETAILS"),
             rs.getString("NEWS_IMAGE"),

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
  * Created by Nguyen Van Phuc on 11/8/18
  */
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1", produces = ["application/json"])
 class BaseController {
 
     @Autowired

@@ -17,5 +17,5 @@ class TypeUserDAO : BaseDAO() {
                 typeUser.nameType)
     }
 
-    fun view(): List<TypeUser> = jdbcTemplate.query("SELECT * FROM TYPE_USER", TypeUserMapper())
+    fun view(): List<TypeUser>? = jdbcTemplate.query("SELECT * FROM TYPE_USER", TypeUserMapper())
 }
