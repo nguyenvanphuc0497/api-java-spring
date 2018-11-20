@@ -1,7 +1,7 @@
-package com.capstone1.tutoryapi.controller.user
+package com.capstone1.tutoryapi.controller.account
 
 import com.capstone1.tutoryapi.controller.BaseController
-import com.capstone1.tutoryapi.entities.user.TypeUser
+import com.capstone1.tutoryapi.entities.account.TypeUser
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping

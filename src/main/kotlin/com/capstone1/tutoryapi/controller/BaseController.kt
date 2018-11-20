@@ -1,8 +1,8 @@
 package com.capstone1.tutoryapi.controller
 
 import com.capstone1.tutoryapi.dao.posts.PostsDAO
-import com.capstone1.tutoryapi.dao.user.TypeUserDAO
-import com.capstone1.tutoryapi.dao.user.UserAccountDAO
+import com.capstone1.tutoryapi.dao.account.TypeUserDAO
+import com.capstone1.tutoryapi.dao.account.UserAccountDAO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController

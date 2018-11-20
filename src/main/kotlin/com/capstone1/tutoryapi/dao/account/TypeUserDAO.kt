@@ -1,9 +1,9 @@
-package com.capstone1.tutoryapi.dao.user
+package com.capstone1.tutoryapi.dao.account
 
 import com.capstone1.tutoryapi.dao.BaseDAO
 import com.capstone1.tutoryapi.entities.EntitiesTable
-import com.capstone1.tutoryapi.entities.user.TypeUser
-import com.capstone1.tutoryapi.entities.user.TypeUserMapper
+import com.capstone1.tutoryapi.entities.account.TypeUser
+import com.capstone1.tutoryapi.entities.account.TypeUserMapper
 import org.springframework.stereotype.Repository
 
 /**
