@@ -1,8 +1,9 @@
 package com.capstone1.tutoryapi.controller
 
-import com.capstone1.tutoryapi.dao.posts.PostsDAO
 import com.capstone1.tutoryapi.dao.account.TypeUserDAO
 import com.capstone1.tutoryapi.dao.account.UserAccountDAO
+import com.capstone1.tutoryapi.dao.account.UserProfileDAO
+import com.capstone1.tutoryapi.dao.posts.PostsDAO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -22,4 +23,7 @@ class BaseController {
 
     @Autowired
     protected lateinit var postsDAO: PostsDAO
+
+    @Autowired
+    protected lateinit var userProfileDAO: UserProfileDAO
 }
