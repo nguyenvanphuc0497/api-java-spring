@@ -1,4 +1,4 @@
-package com.capstone1.tutoryapi.entities.user
+package com.capstone1.tutoryapi.entities.account
 
 import org.springframework.jdbc.core.RowMapper
 import java.sql.ResultSet

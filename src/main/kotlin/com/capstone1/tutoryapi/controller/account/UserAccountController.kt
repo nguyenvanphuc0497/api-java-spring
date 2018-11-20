@@ -1,4 +1,4 @@
-package com.capstone1.tutoryapi.controller.user
+package com.capstone1.tutoryapi.controller.account
 
 import com.capstone1.tutoryapi.controller.BaseController
 import org.springframework.web.bind.annotation.*
@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.*
 @RestController
 class UserAccountController : BaseController() {
 
-    @GetMapping("/user")
+    @GetMapping("/account")
     internal fun viewAll() = UserAccountResponse(userAccountDAO.view())
 
-    @GetMapping("/user/{idUser}")
+    @GetMapping("/account/{idUser}")
     fun viewByIdUser(@PathVariable idUser: Int) = userAccountDAO.viewByIdUser(idUser)
 
     @PostMapping(consumes = ["application/json", "multipart/form-data"])
     fun viewByIdUserAndType(@RequestBody body: Map<String, String>) = userAccountDAO.viewByIdUserAndIdType(body["idUser"]?.toInt(), body["isType"])
 
-    @PostMapping("/user/login", consumes = ["application/json", "multipart/form-data"])
+    @PostMapping("/account/login", consumes = ["application/json", "multipart/form-data"])
     fun checkAcountLogin(@RequestBody body: Map<String, String>) = userAccountDAO.checkAccountLogin(body["userName"], body["passWord"])
 }
