@@ -7,4 +7,6 @@ data class ThreadMessage(val idThread: Int? = 0,
                          val createTime: String? = null,
                          val receiverIdProfile: Int? = 0,
                          val senderIdProfile: Int? = 0,
-                         val status: String? = "0")
+                         val status: String? = "0",
+                         val nameReceiver: String? = null,
+                         val urlAvatarReceiver: String? = null)

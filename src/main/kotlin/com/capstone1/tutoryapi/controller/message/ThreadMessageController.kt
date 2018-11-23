@@ -13,7 +13,7 @@ class ThreadMessageController : BaseController() {
 
     @PostMapping("/thread", consumes = ["application/json", "multipart/form-data"])
     internal fun getThreadByIdProfile(@RequestBody body: Map<String, String>) =
-            ThreadMessageResponse(threadMessageDAO.viewThreadMessageByIdProfile(body["idProfile"]?.toInt()).toList())
+            ThreadMessageResponse(threadMessageDAO.getProfileForThread(body["idProfile"]?.toInt()).toList())
 
     @PostMapping("/thread/message", consumes = ["application/json", "multipart/form-data"])
     internal fun getMessageByIdThread(@RequestBody body: Map<String, String>) =

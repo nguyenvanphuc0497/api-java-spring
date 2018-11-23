@@ -1,7 +1,7 @@
 package com.capstone1.tutoryapi.dao.message
 
 import com.capstone1.tutoryapi.dao.BaseDAO
-import com.capstone1.tutoryapi.entities.EntitiesTable
+import com.capstone1.tutoryapi.entities.messager.ThreadMessage
 import com.capstone1.tutoryapi.entities.messager.ThreadMessageMapper
 import org.springframework.stereotype.Repository
 
@@ -10,7 +10,12 @@ import org.springframework.stereotype.Repository
  */
 @Repository
 class ThreadMessagerDAO : BaseDAO() {
-    internal fun viewThreadMessageByIdProfile(idProfile: Int?) = jdbcTemplate.query(
-            "SELECT * FROM ${EntitiesTable.threadMessage} WHERE SENDER_IDPROFILE = $idProfile OR RECEIVER_IDPROFILE =$idProfile", ThreadMessageMapper())
 
+    internal fun getProfileForThread(idProfile: Int?): List<ThreadMessage> {
+        val sql = "SELECT tm.*, up.NAME AS NAME_RECEIVER , up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
+                "FROM thread_messager AS tm INNER JOIN user_profile AS up " +
+                "WHERE tm.RECEIVER_IDPROFILE = up.ID_PROFILE AND( " +
+                "tm.SENDER_IDPROFILE = $idProfile OR tm.RECEIVER_IDPROFILE = $idProfile ) "
+        return jdbcTemplate.query(sql, ThreadMessageMapper())
+    }
 }
