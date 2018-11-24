@@ -14,4 +14,14 @@ class UserProfileDAO : BaseDAO() {
     internal fun findAll() = jdbcTemplate.query(
             "SELECT * FROM ${EntitiesTable.userProfile}",
             UserProfileMapper())
+
+    internal fun accountAuthentication(userName: String?, password: String?): Boolean {
+        var status = false
+        val sql = "SELECT * FROM ${EntitiesTable.userAccount} WHERE USER_NAME LIKE '${userName?.trim()}' AND PASS_WORD LIKE '${password?.trim()}'"
+        print("$userName$password")
+        jdbcTemplate.query(sql) {
+            if (it.row > 0) status = true
+        }
+        return status
+    }
 }

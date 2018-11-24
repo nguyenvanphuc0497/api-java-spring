@@ -13,20 +13,20 @@ import org.springframework.stereotype.Repository
 class UserAccountDAO : BaseDAO() {
 
     internal fun view(): List<UserAccount> = jdbcTemplate.query(
-            "SELECT * FROM ${EntitiesTable.userTable}",
+            "SELECT * FROM ${EntitiesTable.userAccount}",
             UserAccountMapper())
 
     internal fun viewByIdUser(id: Int): UserAccount? = jdbcTemplate.queryForObject(
-            "SELECT * FROM ${EntitiesTable.userTable} WHERE ID_USER=?",
+            "SELECT * FROM ${EntitiesTable.userAccount} WHERE ID_USER=?",
             UserAccountMapper(), id)
 
     internal fun viewByIdUserAndIdType(idUser: Int?, idType: String?): UserAccount? = jdbcTemplate.queryForObject(
-            "SELECT * FROM ${EntitiesTable.userTable} WHERE ID_USER=? AND ID_TYPE=?",
+            "SELECT * FROM ${EntitiesTable.userAccount} WHERE ID_USER=? AND ID_TYPE=?",
             UserAccountMapper(), idUser, idType)
 
     internal fun checkAccountLogin(userName: String?, passWord: String?): Boolean {
         var status = false
-        jdbcTemplate.query("SELECT * FROM ${EntitiesTable.userTable} WHERE USER_NAME LIKE ? AND PASS_WORD LIKE ?",
+        jdbcTemplate.query("SELECT * FROM ${EntitiesTable.userAccount} WHERE USER_NAME LIKE ? AND PASS_WORD LIKE ?",
                 UserAccountMapper(), userName, passWord).let {
             if (it.size == 1) {
                 status = true
