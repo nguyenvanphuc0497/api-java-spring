@@ -7,7 +7,7 @@ class EntitiesTable {
     companion object {
         internal val postTable = "NEWS".toLowerCase()
         internal val typeUserTable = "TYPE_USER".toLowerCase()
-        internal val userTable = "USER_ACCOUNT".toLowerCase()
+        internal val userAccount = "USER_ACCOUNT".toLowerCase()
         internal val userProfile = "USER_PROFILE".toLowerCase()
     }
 }
