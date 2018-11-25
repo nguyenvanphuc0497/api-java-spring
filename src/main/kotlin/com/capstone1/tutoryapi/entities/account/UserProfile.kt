@@ -11,4 +11,5 @@ data class UserProfile(val idProfile: String? = null,
                        val name: String? = null,
                        val phone: String? = null,
                        val sex: String? = null,
-                       val status: String? = null)
+                       val status: String? = null,
+                       val urlAvatar: String? = null)
