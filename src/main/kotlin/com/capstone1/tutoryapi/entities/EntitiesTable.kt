@@ -11,5 +11,7 @@ class EntitiesTable {
         internal val userProfile = "USER_PROFILE".toLowerCase()
         internal val threadMessage = "THREAD_MESSAGER".toLowerCase()
         internal val message = "MESSAGE".toLowerCase()
+        internal val tutor = "TUTOR".toLowerCase()
+        internal val student = "STUDENT".toLowerCase()
     }
 }

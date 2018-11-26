@@ -13,4 +13,20 @@ class UserProfileController : BaseController() {
 
     @PostMapping("/account/authentication", consumes = ["application/json", "multipart/form-data"])
     internal fun accountAuthentication(@RequestBody body: Map<String, String>) = userProfileDAO.accountAuthentication(body["user_name"], body["password"])
+
+    @PostMapping("/account/logout", consumes = ["application/json", "multipart/form-data"])
+    internal fun logoutAccount(@RequestBody body: Map<String, String>) = userProfileDAO.accountLogout(body["idProfile"]?.toInt())
+
+    @PostMapping("/user/profile", consumes = ["application/json", "multipart/form-data"])
+    internal fun getAllUserProfileByIdAccount(@RequestBody body: Map<String, String>) =
+            UserProfileResponse(userProfileDAO.findAllProfileWithoutIdProfile(body["idProfile"]?.toInt()))
+
+    @PostMapping("/user/profile/tutor", consumes = ["application/json", "multipart/form-data"])
+    internal fun getAllUserProfileForTutorByIdAccount(@RequestBody body: Map<String, String>) =
+            UserProfileResponse(userProfileDAO.findAllProfileTutorWithoutIdProfile(body["idProfile"]?.toInt()))
+
+    @PostMapping("/user/profile/student", consumes = ["application/json", "multipart/form-data"])
+    internal fun getAllUserProfileForStudentByIdAccount(@RequestBody body: Map<String, String>) =
+            UserProfileResponse(userProfileDAO.findAllProfileStudentWithoutIdProfile(body["idProfile"]?.toInt()))
+
 }
