@@ -9,5 +9,7 @@ class EntitiesTable {
         internal val typeUserTable = "TYPE_USER".toLowerCase()
         internal val userAccount = "USER_ACCOUNT".toLowerCase()
         internal val userProfile = "USER_PROFILE".toLowerCase()
+        internal val tutor = "TUTOR".toLowerCase()
+        internal val student = "STUDENT".toLowerCase()
     }
 }
