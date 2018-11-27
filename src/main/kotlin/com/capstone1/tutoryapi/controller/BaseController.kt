@@ -2,6 +2,7 @@ package com.capstone1.tutoryapi.controller
 
 import com.capstone1.tutoryapi.dao.account.TypeUserDAO
 import com.capstone1.tutoryapi.dao.account.UserProfileDAO
+import com.capstone1.tutoryapi.dao.message.AndroidPushNotificationService
 import com.capstone1.tutoryapi.dao.message.MessagerDAO
 import com.capstone1.tutoryapi.dao.message.ThreadMessagerDAO
 import com.capstone1.tutoryapi.dao.posts.PostsDAO
@@ -29,5 +30,8 @@ class BaseController {
     protected lateinit var threadMessageDAO: ThreadMessagerDAO
 
     @Autowired
-    protected lateinit var messagerDAO: MessagerDAO
+    protected lateinit var messageDao: MessagerDAO
+
+    @Autowired
+    protected lateinit var androidPushNotificationService: AndroidPushNotificationService
 }
