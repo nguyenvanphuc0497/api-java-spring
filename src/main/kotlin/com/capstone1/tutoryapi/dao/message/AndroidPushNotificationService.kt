@@ -10,7 +10,6 @@ import java.nio.charset.Charset
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
-
 /**
  * Created by Nguyen Van Phuc on 11/26/18
  */

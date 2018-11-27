@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController
 class UserProfileController : BaseController() {
 
     @PostMapping("/account/authentication", consumes = ["application/json", "multipart/form-data"])
-    internal fun accountAuthentication(@RequestBody body: Map<String, String>) = userProfileDAO.accountAuthentication(body["user_name"], body["password"])
+    internal fun accountAuthentication(@RequestBody body: Map<String, String>) = userProfileDAO.accountAuthentication(body["user_name"], body["password"], body["fcm_token_device"])
 
     @PostMapping("/account/logout", consumes = ["application/json", "multipart/form-data"])
-    internal fun logoutAccount(@RequestBody body: Map<String, String>) = userProfileDAO.accountLogout(body["idProfile"]?.toInt())
+    internal fun logoutAccount(@RequestBody body: Map<String, String>) = userProfileDAO.accountLogout(body["id_user"]?.toInt())
 
     @PostMapping("/user/profile", consumes = ["application/json", "multipart/form-data"])
     internal fun getAllUserProfileByIdAccount(@RequestBody body: Map<String, String>) =

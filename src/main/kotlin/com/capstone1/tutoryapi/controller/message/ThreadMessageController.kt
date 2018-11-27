@@ -20,9 +20,6 @@ class ThreadMessageController : BaseController() {
             MessageResponse(threadMessageDAO.viewMessageByIdThread(body["idThread"]?.toInt()).toList())
 
     @PostMapping("/thread/message/sending", consumes = ["application/json", "multipart/form-data"])
-    internal fun sendingMessageByIdThread(@RequestBody body: Map<String, String>) = threadMessageDAO.createMessageByIdThread(body["idProfile"]?.toInt(), body["idThread"]?.toInt(), body["message"])
-
-//    @PostMapping("/thread/message/sending", consumes = ["application/json", "multipart/form-data"])
-//    internal fun sendMessageToProfile(@RequestBody body: Map<String, String>) = messageDao.createMessageByIdThread(body["idProfile"]?.toInt(), body["idThread"]?.toInt(), body["message"])
-
+    internal fun sendingMessageByIdThread(@RequestBody body: Map<String, String>) =
+            threadMessageDAO.createMessageByIdThread(body["idProfile"]?.toInt(), body["idThread"]?.toInt(), body["message"])
 }
