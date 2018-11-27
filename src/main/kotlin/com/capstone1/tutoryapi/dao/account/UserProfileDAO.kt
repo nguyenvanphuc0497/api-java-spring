@@ -12,18 +12,18 @@ import org.springframework.stereotype.Repository
 @Repository
 class UserProfileDAO : BaseDAO() {
 
-    internal fun accountAuthentication(userName: String?, password: String?): UserProfile {
+    internal fun accountAuthentication(userName: String?, password: String?, tokenDevice: String?): UserProfile {
         var userProfile = UserProfile()
         val sql = "SELECT ID_USER FROM ${EntitiesTable.userAccount} WHERE USER_NAME LIKE '${userName?.trim()}' AND PASS_WORD LIKE '${password?.trim()}' LIMIT 1"
         print("$userName$password")
         jdbcTemplate.query(sql) {
-            updateStatusOnlineForIdProfile(it.getInt("ID_USER"), 0)
+            updateStatusOnlineForIdProfile(it.getInt("ID_USER"), 1, tokenDevice)
             userProfile = findProfileByIdUser(it.getInt("ID_USER"))[0]
         }
         return userProfile
     }
 
-    internal fun accountLogout(idProfile: Int?): Int = updateStatusOnlineForIdProfile(idProfile, 0)
+    internal fun accountLogout(idUser: Int?): Int = updateStatusOnlineForIdProfile(idUser, 0, "")
 
     internal fun findAllProfileWithoutIdProfile(idProfile: Int? = 0): List<UserProfile> {
         val sql = "SELECT * FROM ${EntitiesTable.userProfile} WHERE ID_PROFILE NOT LIKE $idProfile "
@@ -46,5 +46,6 @@ class UserProfileDAO : BaseDAO() {
     private fun findProfileByIdUser(idUser: Int) = jdbcTemplate.query(
             "SELECT * FROM ${EntitiesTable.userProfile} WHERE ID_USER = $idUser LIMIT 1", UserProfileMapper())
 
-    private fun updateStatusOnlineForIdProfile(idProfile: Int?, status: Int? = 0) = jdbcTemplate.update("UPDATE ${EntitiesTable.userProfile} SET STATUS = $status WHERE ID_PROFILE = $idProfile")
+    private fun updateStatusOnlineForIdProfile(isUser: Int?, status: Int? = 0, tokenDevice: String? = "") = jdbcTemplate.update(
+            "UPDATE ${EntitiesTable.userProfile} SET STATUS = '$status' , FCM_TOKEN_DEVICE = '$tokenDevice' WHERE ID_USER = $isUser")
 }
