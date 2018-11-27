@@ -52,11 +52,12 @@ dependencies {
 }
 
 //Testco
-apply plugin: 'jacoco'
-jacocoTestReport {
-    reports {
-        xml.enabled false
-        html.enabled true
-        html.destination "${buildDir}/reports/jacoco/index.html"
-    }
-}
+//Because : Finally decided to downgrade the junit 5 to junit 4 and rebuild the testing environment.
+//apply plugin: 'jacoco'
+//jacocoTestReport {
+//    reports {
+//        xml.enabled false
+//        html.enabled true
+//        html.destination "${buildDir}/reports/jacoco/index.html"
+//    }
+//}
