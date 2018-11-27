@@ -2,10 +2,11 @@ package com.capstone1.tutoryapi.dao.message
 
 import org.springframework.http.HttpEntity
 import org.springframework.http.client.ClientHttpRequestInterceptor
+import org.springframework.http.converter.StringHttpMessageConverter
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
 import org.springframework.web.client.RestTemplate
-import org.springframework.web.servlet.mvc.method.RequestMappingInfo
+import java.nio.charset.Charset
 import java.util.*
 import java.util.concurrent.CompletableFuture
 
@@ -24,6 +25,8 @@ class AndroidPushNotificationService {
     @Async
     internal fun send(entity: HttpEntity<String>): CompletableFuture<String> {
         val restTemplate = RestTemplate()
+        //UTF-8 Encoding
+        restTemplate.messageConverters.add(0, StringHttpMessageConverter(Charset.forName("UTF-8")));
         /**
         https://fcm.googleapis.com/fcm/send
         Content-Type:application/json
