@@ -26,10 +26,10 @@ class ThreadMessageDAO : BaseDAO() {
 //                "tm.SENDER_IDPROFILE = $idProfile OR tm.RECEIVER_IDPROFILE = $idProfile ) "
         //Fix error get info profile not correct
         val sql = "SELECT tm.*, up.NAME AS NAME_RECEIVER, up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
-                "FROM thread_messager AS tm INNER JOIN user_profile AS up ON tm.RECEIVER_IDPROFILE = up.ID_PROFILE " +
+                "FROM ${EntitiesTable.threadMessage} AS tm INNER JOIN ${EntitiesTable.userProfile} AS up ON tm.RECEIVER_IDPROFILE = up.ID_PROFILE " +
                 "WHERE tm.SENDER_IDPROFILE = $idProfile " +
                 "UNION SELECT tm.*, up.NAME AS NAME_RECEIVER, up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
-                "FROM thread_messager AS tm INNER JOIN user_profile AS up ON tm.SENDER_IDPROFILE = up.ID_PROFILE " +
+                "FROM ${EntitiesTable.threadMessage} AS tm INNER JOIN ${EntitiesTable.userProfile} AS up ON tm.SENDER_IDPROFILE = up.ID_PROFILE " +
                 "WHERE tm.RECEIVER_IDPROFILE = $idProfile "
         return jdbcTemplate.query(sql, ThreadMessageMapper())
     }
@@ -39,7 +39,8 @@ class ThreadMessageDAO : BaseDAO() {
             "SELECT * FROM ${EntitiesTable.message} WHERE ID_THREAD = $idThread", MessagerMapper())
 
     internal fun createMessageByIdThread(idProfileSender: Int?, idThread: Int?, message: String?): Int {
-        val sqlSelect = "SELECT * FROM thread_messager WHERE SENDER_IDPROFILE = '$idProfileSender' AND ID_THREAD = '$idThread' UNION SELECT * FROM thread_messager WHERE RECEIVER_IDPROFILE = '$idProfileSender' AND ID_THREAD = '$idThread' LIMIT 1"
+        val sqlSelect = "SELECT * FROM ${EntitiesTable.threadMessage} WHERE SENDER_IDPROFILE = '$idProfileSender' AND ID_THREAD = '$idThread' " +
+                "UNION SELECT * FROM ${EntitiesTable.threadMessage} WHERE RECEIVER_IDPROFILE = '$idProfileSender' AND ID_THREAD = '$idThread' LIMIT 1"
 
         try {
             var count: Int? = 0
@@ -70,14 +71,17 @@ class ThreadMessageDAO : BaseDAO() {
         var tokenDevice = ""
 
         val sql = "SELECT tm.ID_THREAD, up.* " +
-                "FROM thread_messager AS tm INNER JOIN user_profile AS up ON tm.RECEIVER_IDPROFILE = up.ID_PROFILE " +
+                "FROM ${EntitiesTable.threadMessage} AS tm INNER JOIN ${EntitiesTable.userProfile} AS up ON tm.RECEIVER_IDPROFILE = up.ID_PROFILE " +
                 "WHERE tm.SENDER_IDPROFILE = $idProfileSender AND tm.ID_THREAD = $idThread " +
                 "UNION SELECT tm.ID_THREAD, up.* " +
-                "FROM thread_messager AS tm INNER JOIN user_profile AS up ON tm.SENDER_IDPROFILE = up.ID_PROFILE " +
+                "FROM ${EntitiesTable.threadMessage} AS tm INNER JOIN ${EntitiesTable.userProfile} AS up ON tm.SENDER_IDPROFILE = up.ID_PROFILE " +
                 "WHERE tm.RECEIVER_IDPROFILE = $idProfileSender AND tm.ID_THREAD = $idThread LIMIT 1"
         jdbcTemplate.query(sql) {
-            nameSender = it.getString("NAME")
             tokenDevice = it.getString("FCM_TOKEN_DEVICE")
+        }
+
+        jdbcTemplate.query("SELECT NAME FROM ${EntitiesTable.userProfile} WHERE ID_PROFILE = $idProfileSender") {
+            nameSender = it.getString("NAME")
         }
 
         //push notification
