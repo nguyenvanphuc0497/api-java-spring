@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutionException
  * Created by Nguyen Van Phuc on 11/22/18
  */
 @Repository
-class ThreadMessagerDAO : BaseDAO() {
+class ThreadMessageDAO : BaseDAO() {
 
     internal fun getAllProfilesForThreadByIdSender(idProfile: Int?): List<ThreadMessage> {
 //        val sql = "SELECT tm.*, up.NAME AS NAME_RECEIVER , up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
@@ -38,14 +38,14 @@ class ThreadMessagerDAO : BaseDAO() {
     internal fun viewMessageByIdThread(idThread: Int?) = jdbcTemplate.query(
             "SELECT * FROM ${EntitiesTable.message} WHERE ID_THREAD = $idThread", MessagerMapper())
 
-    internal fun createMessageByIdThread(idProfile: Int?, idThread: Int?, message: String?): Int {
-        val sqlSelect = "SELECT * FROM thread_messager WHERE SENDER_IDPROFILE = '$idProfile' AND ID_THREAD = '$idThread' UNION SELECT * FROM thread_messager WHERE RECEIVER_IDPROFILE = '$idProfile' AND ID_THREAD = '$idThread'"
+    internal fun createMessageByIdThread(idProfileSender: Int?, idThread: Int?, message: String?): Int {
+        val sqlSelect = "SELECT * FROM thread_messager WHERE SENDER_IDPROFILE = '$idProfileSender' AND ID_THREAD = '$idThread' UNION SELECT * FROM thread_messager WHERE RECEIVER_IDPROFILE = '$idProfileSender' AND ID_THREAD = '$idThread' LIMIT 1"
 
         try {
             var count: Int? = 0
             jdbcTemplate.query(sqlSelect) {
-                it.row.let { row ->
-                    count = row
+                if (it.getString("SENDER_IDPROFILE") == idProfileSender.toString().trim()) {
+                    count = 1
                 }
             }
             val isSender = if (count == 1) {
@@ -56,7 +56,7 @@ class ThreadMessagerDAO : BaseDAO() {
             val sql = "INSERT INTO `${EntitiesTable.message}` (`ID_THREAD`, `MESSAGECOL`, `IS_SENDER`) VALUES ('$idThread', '$message', '$isSender')"
             return jdbcTemplate.update(sql).apply {
                 if (this@apply == 1) {
-                    pushNotificationToDeviceForProfile(idProfile, idThread, message)
+                    pushNotificationToDeviceForProfile(idProfileSender, idThread, message)
                 }
             }
         } catch (ex: Exception) {
