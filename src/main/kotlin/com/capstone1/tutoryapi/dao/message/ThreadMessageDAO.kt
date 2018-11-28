@@ -2,6 +2,7 @@ package com.capstone1.tutoryapi.dao.message
 
 import com.capstone1.tutoryapi.dao.BaseDAO
 import com.capstone1.tutoryapi.entities.EntitiesTable
+import com.capstone1.tutoryapi.entities.messager.Messager
 import com.capstone1.tutoryapi.entities.messager.MessagerMapper
 import com.capstone1.tutoryapi.entities.messager.ThreadMessage
 import com.capstone1.tutoryapi.entities.messager.ThreadMessageMapper
@@ -34,9 +35,11 @@ class ThreadMessageDAO : BaseDAO() {
         return jdbcTemplate.query(sql, ThreadMessageMapper())
     }
 
-
-    internal fun viewMessageByIdThread(idThread: Int?) = jdbcTemplate.query(
-            "SELECT * FROM ${EntitiesTable.message} WHERE ID_THREAD = $idThread", MessagerMapper())
+    internal fun viewMessageByIdThread(idThread: Int?): List<Messager> {
+        val sql = "SELECT m.* ,tm.SENDER_IDPROFILE FROM ${EntitiesTable.message} AS m INNER JOIN ${EntitiesTable.threadMessage} AS tm " +
+                "ON m.ID_THREAD = tm.ID_THREAD WHERE m.ID_THREAD = '$idThread'"
+        return jdbcTemplate.query(sql, MessagerMapper())
+    }
 
     internal fun createMessageByIdThread(idProfileSender: Int?, idThread: Int?, message: String?): Int {
         val sqlSelect = "SELECT * FROM ${EntitiesTable.threadMessage} WHERE SENDER_IDPROFILE = '$idProfileSender' AND ID_THREAD = '$idThread' " +
