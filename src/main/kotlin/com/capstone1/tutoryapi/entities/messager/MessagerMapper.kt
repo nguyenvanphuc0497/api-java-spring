@@ -12,5 +12,6 @@ class MessagerMapper : RowMapper<Messager> {
             rs.getString("IS_SENDER"),
             rs.getString("MESSAGECOL"),
             rs.getString("READER"),
-            rs.getString("TIME_READ"))
+            rs.getString("TIME_READ"),
+            rs.getString("SENDER_IDPROFILE"))
 }

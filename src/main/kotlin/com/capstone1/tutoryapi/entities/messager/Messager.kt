@@ -8,4 +8,5 @@ data class Messager(val idMessage: Int? = 0,
                     val forSender: String? = "0",
                     val message: String? = "",
                     val reader: String? = "0",
-                    val timeRead: String? = "0")
+                    val timeRead: String? = "0",
+                    val idProfileSender: String? = "")
