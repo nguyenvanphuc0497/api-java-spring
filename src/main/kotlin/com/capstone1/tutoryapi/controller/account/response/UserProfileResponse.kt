@@ -1,4 +1,4 @@
-package com.capstone1.tutoryapi.controller.account
+package com.capstone1.tutoryapi.controller.account.response
 
 import com.capstone1.tutoryapi.entities.account.UserProfile
 

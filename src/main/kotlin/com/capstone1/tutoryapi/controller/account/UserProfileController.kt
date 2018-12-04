@@ -1,6 +1,9 @@
 package com.capstone1.tutoryapi.controller.account
 
 import com.capstone1.tutoryapi.controller.BaseController
+import com.capstone1.tutoryapi.controller.account.response.AddressResponse
+import com.capstone1.tutoryapi.controller.account.response.UserProfileResponse
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
@@ -29,4 +32,6 @@ class UserProfileController : BaseController() {
     internal fun getAllUserProfileForStudentByIdAccount(@RequestBody body: Map<String, String>) =
             UserProfileResponse(userProfileDAO.findAllProfileStudentWithoutIdProfile(body["idProfile"]?.toInt()))
 
+    @GetMapping("/user/profile/address", consumes = ["application/json", "multipart/form-data"])
+    internal fun getAllAddressUserProfile() = AddressResponse(userProfileDAO.findAllAddressForUser())
 }

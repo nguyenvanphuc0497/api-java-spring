@@ -2,6 +2,7 @@ package com.capstone1.tutoryapi.dao.account
 
 import com.capstone1.tutoryapi.dao.BaseDAO
 import com.capstone1.tutoryapi.entities.EntitiesTable
+import com.capstone1.tutoryapi.entities.account.AddressUserMapper
 import com.capstone1.tutoryapi.entities.account.UserProfile
 import com.capstone1.tutoryapi.entities.account.UserProfileMapper
 import org.springframework.stereotype.Repository
@@ -40,6 +41,9 @@ class UserProfileDAO : BaseDAO() {
         return jdbcTemplate.query(sql, UserProfileMapper())
     }
 
+    internal fun findAllAddressForUser() = jdbcTemplate.query("SELECT up.ID_PROFILE, up.NAME, up.URL_AVATAR, CONCAT(a.SO_NHA,', ',tp.name) AS ADDRESS " +
+            "FROM ${EntitiesTable.userProfile} AS up INNER JOIN ${EntitiesTable.address} AS a ON up.ID_ADDRESS = a.ID_ADDRESS INNER JOIN ${EntitiesTable.city} AS tp ON a.ID_THANHPHO = tp.matp",
+            AddressUserMapper())
     /**
      * Function Private
      */

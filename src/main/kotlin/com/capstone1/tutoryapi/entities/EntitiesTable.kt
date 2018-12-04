@@ -13,5 +13,7 @@ class EntitiesTable {
         internal val message = "MESSAGE".toLowerCase()
         internal val tutor = "TUTOR".toLowerCase()
         internal val student = "STUDENT".toLowerCase()
+        internal val address = "ADDRESS".toLowerCase()
+        internal val city = "devvn_tinhthanhpho".toLowerCase()
     }
 }

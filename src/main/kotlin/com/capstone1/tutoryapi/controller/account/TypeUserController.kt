@@ -1,6 +1,7 @@
 package com.capstone1.tutoryapi.controller.account
 
 import com.capstone1.tutoryapi.controller.BaseController
+import com.capstone1.tutoryapi.controller.account.response.TypeUserResponse
 import com.capstone1.tutoryapi.entities.account.TypeUser
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
