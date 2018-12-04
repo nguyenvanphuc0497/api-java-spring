@@ -32,6 +32,6 @@ class UserProfileController : BaseController() {
     internal fun getAllUserProfileForStudentByIdAccount(@RequestBody body: Map<String, String>) =
             UserProfileResponse(userProfileDAO.findAllProfileStudentWithoutIdProfile(body["idProfile"]?.toInt()))
 
-    @GetMapping("/user/profile/address", consumes = ["application/json", "multipart/form-data"])
+    @GetMapping("/user/profile/address")
     internal fun getAllAddressUserProfile() = AddressResponse(userProfileDAO.findAllAddressForUser())
 }
