@@ -5,6 +5,7 @@ package com.capstone1.tutoryapi.entities
  */
 class EntitiesTable {
     companion object {
+        internal const val PROJECT_DIALOG_FLOW = "tutor-api-d90df"
         internal val postTable = "NEWS".toLowerCase()
         internal val typeUserTable = "TYPE_USER".toLowerCase()
         internal val userAccount = "USER_ACCOUNT".toLowerCase()

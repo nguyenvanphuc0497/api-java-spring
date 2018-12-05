@@ -6,7 +6,11 @@ import com.capstone1.tutoryapi.entities.messager.Messager
 import com.capstone1.tutoryapi.entities.messager.MessagerMapper
 import com.capstone1.tutoryapi.entities.messager.ThreadMessage
 import com.capstone1.tutoryapi.entities.messager.ThreadMessageMapper
+import com.google.api.gax.core.FixedCredentialsProvider
+import com.google.auth.oauth2.GoogleCredentials
+import com.google.cloud.dialogflow.v2.*
 import org.json.JSONObject
+import org.springframework.core.io.ClassPathResource
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -68,8 +72,53 @@ class ThreadMessageDAO : BaseDAO() {
         }
     }
 
+    internal fun createMessageWithAIByIdThread(idProfileSender: Int?, idThread: Int?, message: String?) {
+        if(idThread.toString().isNotBlank()){
+            insertMessageToDB(idThread.toString(), message, 1)
+            val messageOfBoot = callDialogFlow(idProfileSender.toString(), idThread, sessionId = idProfileSender.toString(), message = message.toString())
+            insertMessageToDB(idThread.toString(), messageOfBoot, 0)
+            var fcmTokenReceiver: String? = ""
+            jdbcTemplate.query("SELECT FCM_TOKEN_DEVICE FROM ${EntitiesTable.userProfile} WHERE ID_PROFILE = $idProfileSender") {
+                fcmTokenReceiver = it.getString("FCM_TOKEN_DEVICE") ?: ""
+            }
+            pushNotificationByFCM(fcmTokenReceiver, "BOT", messageOfBoot)
+        }
+    }
+
+    @Throws(Exception::class)
+    internal fun callDialogFlow(idProfileSender: String, idThread: Int?, projectId: String = EntitiesTable.PROJECT_DIALOG_FLOW, sessionId: String,
+                                message: String): String? {
+        val credentials = GoogleCredentials.fromStream(ClassPathResource("tutor-api.json").inputStream)
+        val sessionsSettings = SessionsSettings.newBuilder()
+                .setCredentialsProvider(FixedCredentialsProvider.create(credentials)).build()
+        // Instantiates a client
+        SessionsClient.create(sessionsSettings).use { sessionsClient ->
+            // Set the session name using the sessionId and projectID
+            val session = SessionName.of(projectId, sessionId)
+
+            // Set the text and language code (en-US) for the query
+            val textInput = TextInput.newBuilder().setText(message).setLanguageCode("en")
+
+            // Build the query with the TextInput
+            val queryInput = QueryInput.newBuilder().setText(textInput).build()
+
+            // Performs the detect intent request
+            val response = sessionsClient.detectIntent(session, queryInput)
+
+            // Display the query result
+            val queryResult = response.queryResult
+
+            println("====================")
+            System.out.format("Query Text: '%s'\n", queryResult.queryText)
+            System.out.format("Detected Intent: %s (confidence: %f)\n",
+                    queryResult.intent.displayName, queryResult.intentDetectionConfidence)
+            System.out.format("Fulfillment Text: '%s'\n", queryResult.fulfillmentText)
+
+            return queryResult.fulfillmentText
+        }
+    }
+
     private fun pushNotificationToDeviceForProfile(idProfileSender: Int?, idThread: Int?, message: String?): HttpEntity<String> {
-        //get profile
         var nameSender = ""
         var tokenDevice = ""
 
@@ -87,7 +136,10 @@ class ThreadMessageDAO : BaseDAO() {
             nameSender = it.getString("NAME")
         }
 
-        //push notification
+        return pushNotificationByFCM(tokenDevice, nameSender, message)
+    }
+
+    private fun pushNotificationByFCM(tokenDevice: String?, nameSender: String?, message: String?): HttpEntity<String> {
         val body = JSONObject()
         body.put("to", tokenDevice)
         body.put("priority", "high")
@@ -115,5 +167,10 @@ class ThreadMessageDAO : BaseDAO() {
         }
 
         return ResponseEntity("Push Notification ERROR!", HttpStatus.BAD_REQUEST)
+    }
+
+    private fun insertMessageToDB(idThread: String?, message: String?, isSender: Int = 1): Int {
+        val sql = "INSERT INTO `${EntitiesTable.message}` (`ID_THREAD`, `MESSAGECOL`, `IS_SENDER`) VALUES ('$idThread', '$message', '$isSender')"
+        return jdbcTemplate.update(sql)
     }
 }

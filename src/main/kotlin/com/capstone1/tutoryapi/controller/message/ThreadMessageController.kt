@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
+
 /**
  * Created by Nguyen Van Phuc on 11/22/18
  */
@@ -22,4 +23,7 @@ class ThreadMessageController : BaseController() {
     @PostMapping("/thread/message/sending", consumes = ["application/json", "multipart/form-data"])
     internal fun sendingMessageByIdThread(@RequestBody body: Map<String, String>) =
             threadMessageDAO.createMessageByIdThread(body["idProfile"]?.toInt(), body["idThread"]?.toInt(), body["message"])
+
+    @PostMapping("/thread/message/bot/sending", consumes = ["application/json", "multipart/form-data"])
+    internal fun sendingMessageToAIByIdThread(@RequestBody body: Map<String, String>) = threadMessageDAO.createMessageWithAIByIdThread(body["idProfile"]?.toInt(), body["idThread"]?.toInt(), body["message"])
 }
