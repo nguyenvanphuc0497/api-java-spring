@@ -72,17 +72,26 @@ class ThreadMessageDAO : BaseDAO() {
         }
     }
 
-    internal fun createMessageWithAIByIdThread(idProfileSender: Int?, idThread: Int?, message: String?) {
-        if(idThread.toString().isNotBlank()){
-            insertMessageToDB(idThread.toString(), message, 1)
+    @Throws(Exception::class)
+    internal fun createMessageWithAIByIdThread(idProfileSender: Int?, idThread: Int?, message: String?): Int {
+        if (idThread.toString().isNotBlank()) {
             val messageOfBoot = callDialogFlow(idProfileSender.toString(), idThread, sessionId = idProfileSender.toString(), message = message.toString())
-            insertMessageToDB(idThread.toString(), messageOfBoot, 0)
-            var fcmTokenReceiver: String? = ""
-            jdbcTemplate.query("SELECT FCM_TOKEN_DEVICE FROM ${EntitiesTable.userProfile} WHERE ID_PROFILE = $idProfileSender") {
-                fcmTokenReceiver = it.getString("FCM_TOKEN_DEVICE") ?: ""
-            }
-            pushNotificationByFCM(fcmTokenReceiver, "BOT", messageOfBoot)
+            Thread(Runnable {
+                var fcmTokenReceiver: String? = ""
+                jdbcTemplate.query("SELECT FCM_TOKEN_DEVICE FROM ${EntitiesTable.userProfile} WHERE ID_PROFILE = $idProfileSender") {
+                    fcmTokenReceiver = it.getString("FCM_TOKEN_DEVICE") ?: ""
+                }
+                pushNotificationByFCM(fcmTokenReceiver, "BOT", messageOfBoot)
+            }).start()
+
+            Thread(Runnable {
+                insertMessageToDB(idThread.toString(), message, 1)
+                insertMessageToDB(idThread.toString(), messageOfBoot, 0)
+            }).start()
+
+            return 1
         }
+        return 0
     }
 
     @Throws(Exception::class)
@@ -113,7 +122,6 @@ class ThreadMessageDAO : BaseDAO() {
             System.out.format("Detected Intent: %s (confidence: %f)\n",
                     queryResult.intent.displayName, queryResult.intentDetectionConfidence)
             System.out.format("Fulfillment Text: '%s'\n", queryResult.fulfillmentText)
-
             return queryResult.fulfillmentText
         }
     }
@@ -165,7 +173,6 @@ class ThreadMessageDAO : BaseDAO() {
         } catch (e: ExecutionException) {
             e.printStackTrace()
         }
-
         return ResponseEntity("Push Notification ERROR!", HttpStatus.BAD_REQUEST)
     }
 
