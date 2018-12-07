@@ -3,10 +3,8 @@ package com.capstone1.tutoryapi.controller.account
 import com.capstone1.tutoryapi.controller.BaseController
 import com.capstone1.tutoryapi.controller.account.response.AddressResponse
 import com.capstone1.tutoryapi.controller.account.response.UserProfileResponse
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import com.capstone1.tutoryapi.entities.account.UserProfile
+import org.springframework.web.bind.annotation.*
 
 /**
  * Created by Nguyen Van Phuc on 11/20/18
@@ -34,4 +32,9 @@ class UserProfileController : BaseController() {
 
     @GetMapping("/user/profile/address")
     internal fun getAllAddressUserProfile() = AddressResponse(userProfileDAO.findAllAddressForUser())
+
+    @GetMapping("/user/profile/")
+    internal fun getUserProfileByIdProfile(@RequestParam("id") idProfile: String?)=
+        userProfileDAO.findUserProfileByIdProfile(idProfile)
+
 }

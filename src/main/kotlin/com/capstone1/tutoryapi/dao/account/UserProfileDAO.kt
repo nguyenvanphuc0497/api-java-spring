@@ -44,6 +44,15 @@ class UserProfileDAO : BaseDAO() {
     internal fun findAllAddressForUser() = jdbcTemplate.query("SELECT up.ID_PROFILE, up.NAME, up.URL_AVATAR, CONCAT(a.SO_NHA,', ',tp.name) AS ADDRESS " +
             "FROM ${EntitiesTable.userProfile} AS up INNER JOIN ${EntitiesTable.address} AS a ON up.ID_ADDRESS = a.ID_ADDRESS INNER JOIN ${EntitiesTable.city} AS tp ON a.ID_THANHPHO = tp.matp",
             AddressUserMapper())
+
+    internal fun findUserProfileByIdProfile(idProfile: String?): UserProfile? {
+        val result = jdbcTemplate.query("SELECT * FROM ${EntitiesTable.userProfile} WHERE ID_PROFILE = '$idProfile' LIMIT 1", UserProfileMapper())
+        if (result.isNotEmpty()) {
+            return result[0]
+        }
+        return null
+    }
+
     /**
      * Function Private
      */
