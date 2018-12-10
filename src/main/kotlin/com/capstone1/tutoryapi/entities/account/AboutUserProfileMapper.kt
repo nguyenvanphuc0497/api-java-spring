@@ -6,8 +6,8 @@ import java.sql.ResultSet
 /**
  * Created by Nguyen Van Phuc on 11/20/18
  */
-class UserProfileFullyMapper : RowMapper<UserProfileFully> {
-    override fun mapRow(rs: ResultSet, rowNum: Int): UserProfileFully? = UserProfileFully(rs.getString("ID_PROFILE")?.trim(),
+class AboutUserProfileMapper : RowMapper<AboutUserProfile> {
+    override fun mapRow(rs: ResultSet, rowNum: Int): AboutUserProfile? = AboutUserProfile(rs.getString("ID_PROFILE")?.trim(),
             rs.getString("NAME")?.trim(),
             rs.getString("BIRTHDAY")?.trim(),
             rs.getString("SEX")?.trim(),

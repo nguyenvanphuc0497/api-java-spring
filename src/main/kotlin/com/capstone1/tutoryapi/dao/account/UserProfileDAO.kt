@@ -3,8 +3,8 @@ package com.capstone1.tutoryapi.dao.account
 import com.capstone1.tutoryapi.dao.BaseDAO
 import com.capstone1.tutoryapi.entities.EntitiesTable
 import com.capstone1.tutoryapi.entities.account.UserProfile
-import com.capstone1.tutoryapi.entities.account.UserProfileFully
-import com.capstone1.tutoryapi.entities.account.UserProfileFullyMapper
+import com.capstone1.tutoryapi.entities.account.AboutUserProfile
+import com.capstone1.tutoryapi.entities.account.AboutUserProfileMapper
 import com.capstone1.tutoryapi.entities.account.UserProfileMapper
 import org.springframework.stereotype.Repository
 
@@ -42,17 +42,17 @@ class UserProfileDAO : BaseDAO() {
         return jdbcTemplate.query(sql, UserProfileMapper())
     }
 
-    internal fun findUserProfileByIdProfile(idProfile: String?): UserProfileFully? {
+    internal fun findUserProfileByIdProfile(idProfile: String?): AboutUserProfile? {
         val sql = "SELECT up.ID_PROFILE, up.NAME, up.BIRTHDAY, up.SEX, up.SO_NHA, up.PHONE, up.EMAIL, up.URL_AVATAR, up.STATUS, xp.name AS Phuong, qh.name AS Quan, tp.name AS City " +
                 "FROM ${EntitiesTable.userProfile} AS up " +
                 "LEFT JOIN ${EntitiesTable.xaPhuong} AS xp ON up.ID_ADDRESS = xp.xaid LEFT JOIN ${EntitiesTable.quanHuyen} AS qh ON xp.maqh = qh.maqh " +
                 "LEFT JOIN ${EntitiesTable.city} AS tp ON qh.matp = tp.matp " +
-                "WHERE up.ID_PROFILE = '$idProfile' "
-        val result = jdbcTemplate.query(sql, UserProfileFullyMapper())
+                "WHERE up.ID_PROFILE = '$idProfile' LIMIT 1"
+        val result = jdbcTemplate.query(sql, AboutUserProfileMapper())
         if (result.isNotEmpty()) {
             return result[0]
         }
-        return UserProfileFully()
+        return AboutUserProfile()
     }
 
     /**

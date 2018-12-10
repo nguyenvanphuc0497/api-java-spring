@@ -3,7 +3,7 @@ package com.capstone1.tutoryapi.entities.account
 /**
  * Create by Nguyen Van Phuc on 2018-12-08
  **/
-data class UserProfileFully(val idProfile: String? = null,
+data class AboutUserProfile(val idProfile: String? = null,
                             val name: String? = null,
                             val status: String? = null,
                             val birthday: String? = null,
