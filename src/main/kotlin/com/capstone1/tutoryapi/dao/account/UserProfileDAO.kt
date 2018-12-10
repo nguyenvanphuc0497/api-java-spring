@@ -2,8 +2,9 @@ package com.capstone1.tutoryapi.dao.account
 
 import com.capstone1.tutoryapi.dao.BaseDAO
 import com.capstone1.tutoryapi.entities.EntitiesTable
-import com.capstone1.tutoryapi.entities.account.AddressUserMapper
 import com.capstone1.tutoryapi.entities.account.UserProfile
+import com.capstone1.tutoryapi.entities.account.UserProfileFully
+import com.capstone1.tutoryapi.entities.account.UserProfileFullyMapper
 import com.capstone1.tutoryapi.entities.account.UserProfileMapper
 import org.springframework.stereotype.Repository
 
@@ -41,16 +42,17 @@ class UserProfileDAO : BaseDAO() {
         return jdbcTemplate.query(sql, UserProfileMapper())
     }
 
-    internal fun findAllAddressForUser() = jdbcTemplate.query("SELECT up.ID_PROFILE, up.NAME, up.URL_AVATAR, CONCAT(a.SO_NHA,', ',tp.name) AS ADDRESS " +
-            "FROM ${EntitiesTable.userProfile} AS up INNER JOIN ${EntitiesTable.address} AS a ON up.ID_ADDRESS = a.ID_ADDRESS INNER JOIN ${EntitiesTable.city} AS tp ON a.ID_THANHPHO = tp.matp",
-            AddressUserMapper())
-
-    internal fun findUserProfileByIdProfile(idProfile: String?): UserProfile? {
-        val result = jdbcTemplate.query("SELECT * FROM ${EntitiesTable.userProfile} WHERE ID_PROFILE = '$idProfile' LIMIT 1", UserProfileMapper())
+    internal fun findUserProfileByIdProfile(idProfile: String?): UserProfileFully? {
+        val sql = "SELECT up.ID_PROFILE, up.NAME, up.BIRTHDAY, up.SEX, up.SO_NHA, up.PHONE, up.EMAIL, up.URL_AVATAR, up.STATUS, xp.name AS Phuong, qh.name AS Quan, tp.name AS City " +
+                "FROM ${EntitiesTable.userProfile} AS up " +
+                "LEFT JOIN ${EntitiesTable.xaPhuong} AS xp ON up.ID_ADDRESS = xp.xaid LEFT JOIN ${EntitiesTable.quanHuyen} AS qh ON xp.maqh = qh.maqh " +
+                "LEFT JOIN ${EntitiesTable.city} AS tp ON qh.matp = tp.matp " +
+                "WHERE up.ID_PROFILE = '$idProfile' "
+        val result = jdbcTemplate.query(sql, UserProfileFullyMapper())
         if (result.isNotEmpty()) {
             return result[0]
         }
-        return null
+        return UserProfileFully()
     }
 
     /**

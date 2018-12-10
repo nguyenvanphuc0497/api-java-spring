@@ -1,9 +1,7 @@
 package com.capstone1.tutoryapi.controller.account
 
 import com.capstone1.tutoryapi.controller.BaseController
-import com.capstone1.tutoryapi.controller.account.response.AddressResponse
 import com.capstone1.tutoryapi.controller.account.response.UserProfileResponse
-import com.capstone1.tutoryapi.entities.account.UserProfile
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -30,11 +28,7 @@ class UserProfileController : BaseController() {
     internal fun getAllUserProfileForStudentByIdAccount(@RequestBody body: Map<String, String>) =
             UserProfileResponse(userProfileDAO.findAllProfileStudentWithoutIdProfile(body["idProfile"]?.toInt()))
 
-    @GetMapping("/user/profile/address")
-    internal fun getAllAddressUserProfile() = AddressResponse(userProfileDAO.findAllAddressForUser())
-
-    @GetMapping("/user/profile/")
-    internal fun getUserProfileByIdProfile(@RequestParam("id") idProfile: String?)=
-        userProfileDAO.findUserProfileByIdProfile(idProfile)
-
+    @GetMapping("/user/profile/about")
+    internal fun getUserProfileByIdProfile(@RequestParam("id") idProfile: String?) =
+            userProfileDAO.findUserProfileByIdProfile(idProfile)
 }
