@@ -1,9 +1,7 @@
 package com.capstone1.tutoryapi.controller.message
 
 import com.capstone1.tutoryapi.controller.BaseController
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 /**
@@ -25,5 +23,10 @@ class ThreadMessageController : BaseController() {
             threadMessageDAO.createMessageByIdThread(body["idProfile"]?.toInt(), body["idThread"]?.toInt(), body["message"])
 
     @PostMapping("/thread/message/bot/sending", consumes = ["application/json", "multipart/form-data"])
-    internal fun sendingMessageToAIByIdThread(@RequestBody body: Map<String, String>) = threadMessageDAO.createMessageWithAIByIdThread(body["idProfile"]?.toInt(), body["idThread"]?.toInt(), body["message"])
+    internal fun sendingMessageToAIByIdThread(@RequestBody body: Map<String, String>) =
+            threadMessageDAO.createMessageWithAIByIdThread(body["idProfile"]?.toInt(), body["idThread"]?.toInt(), body["message"])
+
+    @GetMapping("/thread/")
+    internal fun getIdThread(@RequestParam("idSender") idProfileSender: String?, @RequestParam("idReceiver") idProfileReceiver: String?) =
+            AboutThreadResponse(threadMessageDAO.getIdThreadByProfileSenderAndProfileReceiver(idProfileSender, idProfileReceiver))
 }

@@ -29,6 +29,10 @@ class UserProfileController : BaseController() {
             UserProfileResponse(userProfileDAO.findAllProfileStudentWithoutIdProfile(body["idProfile"]?.toInt()))
 
     @GetMapping("/user/profile/about")
+    internal fun getAboutUserByIdProfile(@RequestParam("id") idProfile: String?) =
+            userProfileDAO.findAboutUserByIdProfile(idProfile)
+
+    @GetMapping("/user/profile/")
     internal fun getUserProfileByIdProfile(@RequestParam("id") idProfile: String?) =
-            userProfileDAO.findUserProfileByIdProfile(idProfile)
+            userProfileDAO.findAboutUserByIdProfile(idProfile)
 }

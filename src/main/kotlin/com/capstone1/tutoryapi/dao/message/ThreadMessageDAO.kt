@@ -30,10 +30,10 @@ class ThreadMessageDAO : BaseDAO() {
 //                "WHERE tm.RECEIVER_IDPROFILE = up.ID_PROFILE AND( " +
 //                "tm.SENDER_IDPROFILE = $idProfile OR tm.RECEIVER_IDPROFILE = $idProfile ) "
         //Fix error get info profile not correct
-        val sql = "SELECT tm.*, up.NAME AS NAME_RECEIVER, up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
+        val sql = "SELECT tm.*, up.NAME AS NAME_RECEIVER, up.ID_PROFILE AS ID_RECEIVER, up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
                 "FROM ${EntitiesTable.threadMessage} AS tm INNER JOIN ${EntitiesTable.userProfile} AS up ON tm.RECEIVER_IDPROFILE = up.ID_PROFILE " +
                 "WHERE tm.SENDER_IDPROFILE = $idProfile " +
-                "UNION SELECT tm.*, up.NAME AS NAME_RECEIVER, up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
+                "UNION SELECT tm.*, up.NAME AS NAME_RECEIVER, up.ID_PROFILE AS ID_RECEIVER, up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
                 "FROM ${EntitiesTable.threadMessage} AS tm INNER JOIN ${EntitiesTable.userProfile} AS up ON tm.SENDER_IDPROFILE = up.ID_PROFILE " +
                 "WHERE tm.RECEIVER_IDPROFILE = $idProfile "
         return jdbcTemplate.query(sql, ThreadMessageMapper())
@@ -124,6 +124,18 @@ class ThreadMessageDAO : BaseDAO() {
             System.out.format("Fulfillment Text: '%s'\n", queryResult.fulfillmentText)
             return queryResult.fulfillmentText
         }
+    }
+
+    internal fun getIdThreadByProfileSenderAndProfileReceiver(idProfileSender: String?, idProfileReceiver: String?): String? {
+        var result: String? = null
+        val sql = "SELECT tm.ID_THREAD FROM ${EntitiesTable.threadMessage} AS tm INNER JOIN ${EntitiesTable.userProfile} AS up ON tm.RECEIVER_IDPROFILE = up.ID_PROFILE " +
+                "WHERE tm.SENDER_IDPROFILE = '$idProfileSender' AND tm.RECEIVER_IDPROFILE =  '$idProfileReceiver'" +
+                "UNION SELECT tm.ID_THREAD FROM ${EntitiesTable.threadMessage} AS tm INNER JOIN ${EntitiesTable.userProfile} AS up ON tm.SENDER_IDPROFILE = up.ID_PROFILE " +
+                "WHERE tm.RECEIVER_IDPROFILE = '$idProfileSender' AND tm.SENDER_IDPROFILE = '$idProfileReceiver' LIMIT 1"
+        jdbcTemplate.query(sql) {
+            result = it.getString("ID_THREAD") ?: ""
+        }
+        return result
     }
 
     private fun pushNotificationToDeviceForProfile(idProfileSender: Int?, idThread: Int?, message: String?): HttpEntity<String> {
