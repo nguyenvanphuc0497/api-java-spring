@@ -12,6 +12,7 @@ class ThreadMessageMapper : RowMapper<ThreadMessage> {
             rs.getInt("RECEIVER_IDPROFILE"),
             rs.getInt("SENDER_IDPROFILE"),
             rs.getString("STATUS"),
+            rs.getString("ID_RECEIVER"),
             rs.getString("NAME_RECEIVER"),
             rs.getString("URL_AVATAR_RECEIVER"))
 }

@@ -9,14 +9,18 @@ import com.capstone1.tutoryapi.entities.messager.ThreadMessageMapper
 import com.google.api.gax.core.FixedCredentialsProvider
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.dialogflow.v2.*
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException
 import org.json.JSONObject
 import org.springframework.core.io.ClassPathResource
+import org.springframework.dao.DataAccessException
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Repository
+import java.sql.SQLException
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.ExecutionException
+
 
 /**
  * Created by Nguyen Van Phuc on 11/22/18
@@ -30,10 +34,10 @@ class ThreadMessageDAO : BaseDAO() {
 //                "WHERE tm.RECEIVER_IDPROFILE = up.ID_PROFILE AND( " +
 //                "tm.SENDER_IDPROFILE = $idProfile OR tm.RECEIVER_IDPROFILE = $idProfile ) "
         //Fix error get info profile not correct
-        val sql = "SELECT tm.*, up.NAME AS NAME_RECEIVER, up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
+        val sql = "SELECT tm.*, up.NAME AS NAME_RECEIVER, up.ID_PROFILE AS ID_RECEIVER, up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
                 "FROM ${EntitiesTable.threadMessage} AS tm INNER JOIN ${EntitiesTable.userProfile} AS up ON tm.RECEIVER_IDPROFILE = up.ID_PROFILE " +
                 "WHERE tm.SENDER_IDPROFILE = $idProfile " +
-                "UNION SELECT tm.*, up.NAME AS NAME_RECEIVER, up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
+                "UNION SELECT tm.*, up.NAME AS NAME_RECEIVER, up.ID_PROFILE AS ID_RECEIVER, up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
                 "FROM ${EntitiesTable.threadMessage} AS tm INNER JOIN ${EntitiesTable.userProfile} AS up ON tm.SENDER_IDPROFILE = up.ID_PROFILE " +
                 "WHERE tm.RECEIVER_IDPROFILE = $idProfile "
         return jdbcTemplate.query(sql, ThreadMessageMapper())
@@ -123,6 +127,44 @@ class ThreadMessageDAO : BaseDAO() {
                     queryResult.intent.displayName, queryResult.intentDetectionConfidence)
             System.out.format("Fulfillment Text: '%s'\n", queryResult.fulfillmentText)
             return queryResult.fulfillmentText
+        }
+    }
+
+    internal fun getIdThreadByProfileSenderAndProfileReceiver(idProfileSender: String?, idProfileReceiver: String?): String? {
+        var result: String? = null
+        val sql = "SELECT tm.ID_THREAD FROM ${EntitiesTable.threadMessage} AS tm INNER JOIN ${EntitiesTable.userProfile} AS up ON tm.RECEIVER_IDPROFILE = up.ID_PROFILE " +
+                "WHERE tm.SENDER_IDPROFILE = '$idProfileSender' AND tm.RECEIVER_IDPROFILE =  '$idProfileReceiver'" +
+                "UNION SELECT tm.ID_THREAD FROM ${EntitiesTable.threadMessage} AS tm INNER JOIN ${EntitiesTable.userProfile} AS up ON tm.SENDER_IDPROFILE = up.ID_PROFILE " +
+                "WHERE tm.RECEIVER_IDPROFILE = '$idProfileSender' AND tm.SENDER_IDPROFILE = '$idProfileReceiver' LIMIT 1"
+        jdbcTemplate.query(sql) {
+            result = it.getString("ID_THREAD") ?: ""
+        }
+        return result
+    }
+
+    @Throws(DataAccessException::class, MySQLIntegrityConstraintViolationException::class)
+    internal fun createNewThread(idProfileSender: String?, idProfileReceiver: String?): Int {
+        var count = -1
+        var result = -1
+        val sqlInsert = "INSERT INTO `${EntitiesTable.threadMessage}`( `SENDER_IDPROFILE`, `RECEIVER_IDPROFILE`) VALUES ('$idProfileSender','$idProfileReceiver')"
+        try {
+            count = jdbcTemplate.update(sqlInsert)
+            result = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID() AS ID_THREAD", Int::class.java) ?: 0
+            println(result)
+            return if (count == 1) {
+                result
+            } else {
+                0
+            }
+        } catch (ex: Exception) {
+            //TODO:SOMETHING
+        } catch (eSql: SQLException) {
+            println(eSql.message.toString())
+        }
+        return if (count == 1) {
+            result
+        } else {
+            0
         }
     }
 
