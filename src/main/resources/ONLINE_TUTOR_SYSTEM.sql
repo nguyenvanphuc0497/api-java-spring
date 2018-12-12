@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 10, 2018 at 07:36 AM
+-- Generation Time: Dec 11, 2018 at 03:22 PM
 -- Server version: 10.1.23-MariaDB-9+deb9u1
 -- PHP Version: 7.0.30-0+deb9u1
 
@@ -12161,6 +12161,7 @@ INSERT INTO `editor` (`PARTY_ID`, `ID_USER`) VALUES
 (15, 4),
 (16, 4),
 (18, 4),
+(21, 4),
 (1, 5),
 (11, 5),
 (3, 6),
@@ -12197,7 +12198,8 @@ INSERT INTO `editor_of_news` (`PARTY_ID_FORM`, `PARTY_ROLE_TYPE_ID_FROM`, `THING
 (10, 15, 28, '2018-11-12 00:00:00'),
 (11, 16, 29, '2018-11-12 00:00:00'),
 (12, 18, 55, '2018-11-22 00:00:00'),
-(13, 20, 57, '2018-12-01 00:00:00');
+(13, 20, 57, '2018-12-01 00:00:00'),
+(14, 21, 58, '2018-12-11 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -13147,7 +13149,17 @@ INSERT INTO `message` (`ID_MESSAGE`, `ID_THREAD`, `MESSAGECOL`, `IS_SENDER`, `RE
 (862, 1, 'ok', 1, 0, NULL),
 (863, 1, 'ok', 1, 0, NULL),
 (864, 3, 'ok', 1, 0, NULL),
-(865, 3, 'Chúc bạn thành công!', 0, 0, NULL);
+(865, 3, 'Chúc bạn thành công!', 0, 0, NULL),
+(866, 2, 'alo', 0, 0, NULL),
+(867, 2, 'ok', 0, 0, NULL),
+(868, 2, 'ok', 0, 0, NULL),
+(869, 2, 'ok', 0, 0, NULL),
+(870, 2, 'ok', 0, 0, NULL),
+(871, 2, 'ok', 1, 0, NULL),
+(872, 2, '123', 1, 0, NULL),
+(873, 2, '456', 1, 0, NULL),
+(874, 2, 'chào chế', 0, 0, NULL),
+(875, 2, 'ok', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -13210,7 +13222,8 @@ INSERT INTO `news` (`NEWS_ID`, `NEWS_TITLE`, `DETAILS`, `COVER_NEWS`, `NEWS_IMAG
 (54, 'Tìm giảng viên', 'tìm gia sư cho bé ', 'nothing', 'nothing', 0),
 (55, 'Tìm giảng viên', 'tìm gia sư cho bé', 'nothing', 'nothing', 0),
 (56, 'Tìm học Viên', 'cần tìm học viên cho tiếng anh sắp tới', 'nothing', 'nothing', 0),
-(57, 'Tìm học Viên', 'cần tìm học viên cho lớp tiếng anh sắp tới', 'nothing', 'nothing', 0);
+(57, 'Tìm học Viên', 'cần tìm học viên cho lớp tiếng anh sắp tới', 'nothing', 'nothing', 0),
+(58, 'Tìm học Viên', 'sắp tới mình có mở lớp tiếng anh ', 'nothing', 'nothing', 1);
 
 -- --------------------------------------------------------
 
@@ -13244,7 +13257,8 @@ INSERT INTO `news_categories_of_new` (`NEWS_ID`, `NEWS_CATEGORY_TYPE_ID`, `NEWS_
 (54, 3, 'nothing'),
 (55, 9, 'nothing'),
 (56, 9, 'nothing'),
-(57, 9, 'nothing');
+(57, 9, 'nothing'),
+(58, 9, 'nothing');
 
 -- --------------------------------------------------------
 
@@ -13628,12 +13642,12 @@ CREATE TABLE `user_profile` (
 --
 
 INSERT INTO `user_profile` (`ID_PROFILE`, `NAME`, `BIRTHDAY`, `SEX`, `ID_ADDRESS`, `SO_NHA`, `PHONE`, `EMAIL`, `ID_USER`, `STATUS`, `URL_AVATAR`, `FCM_TOKEN_DEVICE`) VALUES
-(1, 'Võ Thế Doãn', '1996-06-05', 'Nam', '03191', '45 lê độ ĐN', '     0124151213', 'doan22@gmail.com', 4, 0, NULL, NULL),
+(1, 'Võ Thế Doãn', '1996-06-05', 'Nam', '03191', '45 lê độ ĐN', '     0124151213', 'doan22@gmail.com', 4, 0, '5c0f6ac5b89ee5.59005739.jpg', NULL),
 (3, 'Nguyễn Vân An', '1993-11-15', 'Nam', NULL, NULL, '0122456578', 'traan@gmail.com', 5, 0, NULL, NULL),
 (5, 'Trần Văn Công', '1992-02-02', 'Nam', NULL, NULL, '0122456578', 'traan@gmail.com', 6, 0, NULL, NULL),
 (7, 'Dương Đông Long', '1993-01-01', 'nam', NULL, NULL, '221111554', 'long@gmail.com', 7, 1, NULL, 'f3gUFBzRkEc:APA91bEH9oWY4-0iWdXIehgYWcU5cZ6n9-XdqtP4PoHxgg2HOJoDDbHRFzn4W2t3os4W3mDTwTFdUKmfqVlArsQBukwc9jFtOYp3V1816cDy1dA78oeBTPePte7dTmUDOQPhoRO0cGDd'),
-(8, 'Văn Phúc', '1997-06-11', 'Nam', NULL, NULL, ' 0120312411', ' vanphuc@gmail.com', 8, 1, NULL, 'dtMbzehov-8:APA91bFHYiXE8NwdYexY5Yg6Q2osVhuBHf29FWBPC9YVL9eN1Yhf5q9CPAp3AoB20gIwjjdjdrkLi9cUSfhHnjgwfaXBcaVpicr8wvSUTlRtY27gfl4UMzYlxcSxIIefow5v3uHEGDfy'),
-(9, 'Nguyen Van Phuc 2', '1993-01-01', 'Nam', NULL, NULL, '0289648650', 'nguyenvanphuc0497@gmail.com', 9, 1, NULL, 'null'),
+(8, 'Văn Phúc', '1997-06-11', 'Nam', NULL, NULL, ' 0120312411', ' vanphuc@gmail.com', 8, 1, NULL, 'f3gUFBzRkEc:APA91bEH9oWY4-0iWdXIehgYWcU5cZ6n9-XdqtP4PoHxgg2HOJoDDbHRFzn4W2t3os4W3mDTwTFdUKmfqVlArsQBukwc9jFtOYp3V1816cDy1dA78oeBTPePte7dTmUDOQPhoRO0cGDd'),
+(9, 'Nguyen Van Phuc 2', '1993-01-01', 'Nam', NULL, NULL, '0289648650', 'nguyenvanphuc0497@gmail.com', 9, 1, NULL, 'dtMbzehov-8:APA91bFHYiXE8NwdYexY5Yg6Q2osVhuBHf29FWBPC9YVL9eN1Yhf5q9CPAp3AoB20gIwjjdjdrkLi9cUSfhHnjgwfaXBcaVpicr8wvSUTlRtY27gfl4UMzYlxcSxIIefow5v3uHEGDfy'),
 (10, 'Nguyen Van Phuc 3', '1993-01-01', 'Nam', NULL, NULL, '0289648650', 'nguyenvanphuc0497@gmail.com', 10, 1, NULL, NULL),
 (11, 'Nguyen Van Phuc 4', '1993-01-01', 'Nam', NULL, NULL, '0289648650', 'nguyenvanphuc0497@gmail.com', 11, 0, NULL, NULL),
 (12, 'Nguyen Van Phuc 5', '1993-01-01', 'Nam', NULL, NULL, '0289648650', 'nguyenvanphuc0497@gmail.com', 12, 1, NULL, NULL),
@@ -13657,7 +13671,7 @@ INSERT INTO `user_profile` (`ID_PROFILE`, `NAME`, `BIRTHDAY`, `SEX`, `ID_ADDRESS
 (31, 'Nguyen Van Phuc 24', '1993-01-01', 'Nam', NULL, NULL, '0289648650', 'nguyenvanphuc0497@gmail.com', 31, 1, NULL, NULL),
 (32, 'Nguyen Trung Tien', '1997-10-24', 'Nam', '20245', 'K149 Lê Đình Lý', '0327264465', 'trungtien2410@gmail.com', 32, 1, 'upload/2018/12/03/4358041-zoro.jpg', NULL),
 (111, 'BOT', NULL, NULL, NULL, NULL, NULL, NULL, 1, 0, NULL, NULL),
-(113, 'Võ Thế Doãn 2', '1997-06-20', 'Nữ', '15520', '63 đăng thai mai', '0981231241', 'doan@gmail.com', 33, 0, 'imageUSER5c0b42cb7f5f82.70818597.jpg', NULL);
+(113, 'Võ Thế Doãn 2', '1997-06-20', 'Nam', '28807', '63 đăng thai mai', ' 0981231241', 'doan22@gmail.com', 33, 0, '5c0f69849c6b59.03499996.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -13902,6 +13916,7 @@ ALTER TABLE `student_rela_course`
 --
 ALTER TABLE `thread_messager`
   ADD PRIMARY KEY (`ID_THREAD`),
+  ADD UNIQUE KEY `UQ_SENDER_RECEIVER` (`SENDER_IDPROFILE`,`RECEIVER_IDPROFILE`),
   ADD KEY `FK_SENDER` (`SENDER_IDPROFILE`),
   ADD KEY `FK_RECEIVER` (`RECEIVER_IDPROFILE`);
 
@@ -13982,12 +13997,12 @@ ALTER TABLE `course`
 -- AUTO_INCREMENT for table `editor`
 --
 ALTER TABLE `editor`
-  MODIFY `PARTY_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `PARTY_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT for table `editor_of_news`
 --
 ALTER TABLE `editor_of_news`
-  MODIFY `PARTY_ID_FORM` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `PARTY_ID_FORM` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 --
 -- AUTO_INCREMENT for table `flash`
 --
@@ -14002,12 +14017,12 @@ ALTER TABLE `flash_type`
 -- AUTO_INCREMENT for table `message`
 --
 ALTER TABLE `message`
-  MODIFY `ID_MESSAGE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=866;
+  MODIFY `ID_MESSAGE` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=877;
 --
 -- AUTO_INCREMENT for table `news`
 --
 ALTER TABLE `news`
-  MODIFY `NEWS_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
+  MODIFY `NEWS_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 --
 -- AUTO_INCREMENT for table `news_category_type`
 --
@@ -14057,7 +14072,7 @@ ALTER TABLE `student`
 -- AUTO_INCREMENT for table `thread_messager`
 --
 ALTER TABLE `thread_messager`
-  MODIFY `ID_THREAD` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ID_THREAD` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `tutor`
 --
