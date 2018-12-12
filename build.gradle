@@ -49,14 +49,19 @@ dependencies {
     compile("org.jetbrains.kotlin:kotlin-reflect")
     compile("mysql:mysql-connector-java")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
+    // https://mvnrepository.com/artifact/org.json/json
+    compile group: 'org.json', name: 'json', version: '20090211'
+    compile 'com.google.cloud:google-cloud-dialogflow:0.72.0-alpha'
+    compile 'com.google.apis:google-api-services-dialogflow:v2-rev50-1.25.0'
 }
 
 //Testco
-apply plugin: 'jacoco'
-jacocoTestReport {
-    reports {
-        xml.enabled false
-        html.enabled true
-        html.destination "${buildDir}/reports/jacoco/index.html"
-    }
-}
+//Because : Finally decided to downgrade the junit 5 to junit 4 and rebuild the testing environment.
+//apply plugin: 'jacoco'
+//jacocoTestReport {
+//    reports {
+//        xml.enabled false
+//        html.enabled true
+//        html.destination "${buildDir}/reports/jacoco/index.html"
+//    }
+//}

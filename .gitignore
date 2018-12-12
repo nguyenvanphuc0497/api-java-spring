@@ -6,7 +6,7 @@
 *.dbf
 *.mdb
 *.pdb
-*.sql
+##*.sql
 *.sqlite3
 
 ### Intellij ###
@@ -27,6 +27,9 @@ build/*
 
 # Generated files
 .idea/**/contentModel.xml
+src/.DS_Store
+src/main/.DS_Store
+src/main/resources/.DS_Store
 
 # Sensitive or high-churn files
 .idea/**/dataSources/
