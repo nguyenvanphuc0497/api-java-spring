@@ -3,7 +3,6 @@ package com.capstone1.tutoryapi.controller.message
 import com.capstone1.tutoryapi.controller.BaseController
 import org.springframework.web.bind.annotation.*
 
-
 /**
  * Created by Nguyen Van Phuc on 11/22/18
  */
@@ -29,4 +28,8 @@ class ThreadMessageController : BaseController() {
     @GetMapping("/thread/")
     internal fun getIdThread(@RequestParam("idSender") idProfileSender: String?, @RequestParam("idReceiver") idProfileReceiver: String?) =
             AboutThreadResponse(threadMessageDAO.getIdThreadByProfileSenderAndProfileReceiver(idProfileSender, idProfileReceiver))
+
+    @PostMapping("thread/new")
+    internal fun newThread(@RequestParam("idSender") idProfileSender: String?, @RequestParam("idReceiver") idProfileReceiver: String?) =
+            AboutThreadResponse(threadMessageDAO.createNewThread(idProfileSender, idProfileReceiver).toString())
 }
