@@ -19,26 +19,26 @@ class UserProfileDAO : BaseDAO() {
         val sql = "SELECT ID_USER FROM ${EntitiesTable.userAccount} WHERE USER_NAME LIKE '${userName?.trim()}' AND PASS_WORD LIKE '${password?.trim()}' LIMIT 1"
         print("$userName$password")
         jdbcTemplate.query(sql) {
-            updateStatusOnlineForIdProfile(it.getInt("ID_USER"), 1, tokenDevice)
+            updateStatusOnlineForIdProfile(it.getInt("ID_USER").toString(), 1, tokenDevice)
             userProfile = findProfileByIdUser(it.getInt("ID_USER"))[0]
         }
         return userProfile
     }
 
-    internal fun accountLogout(idUser: Int?): Int = updateStatusOnlineForIdProfile(idUser, 0, "")
+    internal fun accountLogout(idUser: String?): Int = updateStatusOnlineForIdProfile(idUser, 0, "")
 
-    internal fun findAllProfileWithoutIdProfile(idProfile: Int? = 0): List<UserProfile> {
+    internal fun findAllProfileWithoutIdProfile(idProfile: String? = "0"): List<UserProfile> {
         val sql = "SELECT * FROM ${EntitiesTable.userProfile} WHERE ID_PROFILE NOT LIKE $idProfile "
         return jdbcTemplate.query(sql, UserProfileMapper())
     }
 
-    internal fun findAllProfileStudentWithoutIdProfile(idProfile: Int? = 0): List<UserProfile> {
-        val sql = "SELECT * FROM ${EntitiesTable.userProfile} AS up INNER JOIN ${EntitiesTable.student} AS s WHERE up.ID_PROFILE NOT LIKE $idProfile AND up.ID_PROFILE = s.ID_PROFILE "
+    internal fun findAllProfileStudentWithoutIdProfile(idProfile: String? = "0"): List<UserProfile> {
+        val sql = "SELECT * FROM ${EntitiesTable.userProfile} AS up INNER JOIN ${EntitiesTable.student} AS s WHERE up.ID_PROFILE NOT LIKE '$idProfile' AND up.ID_PROFILE = s.ID_PROFILE "
         return jdbcTemplate.query(sql, UserProfileMapper())
     }
 
-    internal fun findAllProfileTutorWithoutIdProfile(idProfile: Int? = 0): List<UserProfile> {
-        val sql = "SELECT * FROM ${EntitiesTable.userProfile} AS up INNER JOIN ${EntitiesTable.tutor} AS s WHERE up.ID_PROFILE NOT LIKE $idProfile AND up.ID_PROFILE = s.ID_PROFILE "
+    internal fun findAllProfileTutorWithoutIdProfile(idProfile: String? = "0"): List<UserProfile> {
+        val sql = "SELECT * FROM ${EntitiesTable.userProfile} AS up INNER JOIN ${EntitiesTable.tutor} AS s WHERE up.ID_PROFILE NOT LIKE '$idProfile' AND up.ID_PROFILE = s.ID_PROFILE "
         return jdbcTemplate.query(sql, UserProfileMapper())
     }
 
@@ -69,6 +69,6 @@ class UserProfileDAO : BaseDAO() {
     private fun findProfileByIdUser(idUser: Int) = jdbcTemplate.query(
             "SELECT * FROM ${EntitiesTable.userProfile} WHERE ID_USER = $idUser LIMIT 1", UserProfileMapper())
 
-    private fun updateStatusOnlineForIdProfile(isUser: Int?, status: Int? = 0, tokenDevice: String? = "") = jdbcTemplate.update(
+    private fun updateStatusOnlineForIdProfile(isUser: String?, status: Int? = 0, tokenDevice: String? = "") = jdbcTemplate.update(
             "UPDATE ${EntitiesTable.userProfile} SET STATUS = '$status' , FCM_TOKEN_DEVICE = '$tokenDevice' WHERE ID_USER = $isUser")
 }

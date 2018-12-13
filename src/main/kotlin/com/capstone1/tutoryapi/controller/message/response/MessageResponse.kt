@@ -1,4 +1,4 @@
-package com.capstone1.tutoryapi.controller.message
+package com.capstone1.tutoryapi.controller.message.response
 
 import com.capstone1.tutoryapi.entities.messager.Messager
 
