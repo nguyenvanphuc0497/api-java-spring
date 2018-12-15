@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutionException
 @Repository
 class ThreadMessageDAO : BaseDAO() {
 
-    internal fun getAllProfilesForThreadByIdSender(idProfile: Int?): List<ThreadMessage> {
+    internal fun getAllProfilesForThreadByIdSender(idProfile: String?): List<ThreadMessage> {
 //        val sql = "SELECT tm.*, up.NAME AS NAME_RECEIVER , up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
 //                "FROM thread_messager AS tm INNER JOIN user_profile AS up " +
 //                "WHERE tm.RECEIVER_IDPROFILE = up.ID_PROFILE AND( " +
@@ -36,20 +36,20 @@ class ThreadMessageDAO : BaseDAO() {
         //Fix error get info profile not correct
         val sql = "SELECT tm.*, up.NAME AS NAME_RECEIVER, up.ID_PROFILE AS ID_RECEIVER, up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
                 "FROM ${EntitiesTable.threadMessage} AS tm INNER JOIN ${EntitiesTable.userProfile} AS up ON tm.RECEIVER_IDPROFILE = up.ID_PROFILE " +
-                "WHERE tm.SENDER_IDPROFILE = $idProfile " +
+                "WHERE tm.SENDER_IDPROFILE = '$idProfile' " +
                 "UNION SELECT tm.*, up.NAME AS NAME_RECEIVER, up.ID_PROFILE AS ID_RECEIVER, up.URL_AVATAR AS URL_AVATAR_RECEIVER " +
                 "FROM ${EntitiesTable.threadMessage} AS tm INNER JOIN ${EntitiesTable.userProfile} AS up ON tm.SENDER_IDPROFILE = up.ID_PROFILE " +
-                "WHERE tm.RECEIVER_IDPROFILE = $idProfile "
+                "WHERE tm.RECEIVER_IDPROFILE = '$idProfile' "
         return jdbcTemplate.query(sql, ThreadMessageMapper())
     }
 
-    internal fun viewMessageByIdThread(idThread: Int?): List<Messager> {
+    internal fun viewMessageByIdThread(idThread: String?): List<Messager> {
         val sql = "SELECT m.* ,tm.SENDER_IDPROFILE FROM ${EntitiesTable.message} AS m INNER JOIN ${EntitiesTable.threadMessage} AS tm " +
                 "ON m.ID_THREAD = tm.ID_THREAD WHERE m.ID_THREAD = '$idThread'"
         return jdbcTemplate.query(sql, MessagerMapper())
     }
 
-    internal fun createMessageByIdThread(idProfileSender: Int?, idThread: Int?, message: String?): Int {
+    internal fun createMessageByIdThread(idProfileSender: String?, idThread: String?, message: String?): Int {
         val sqlSelect = "SELECT * FROM ${EntitiesTable.threadMessage} WHERE SENDER_IDPROFILE = '$idProfileSender' AND ID_THREAD = '$idThread' " +
                 "UNION SELECT * FROM ${EntitiesTable.threadMessage} WHERE RECEIVER_IDPROFILE = '$idProfileSender' AND ID_THREAD = '$idThread' LIMIT 1"
 
@@ -77,7 +77,7 @@ class ThreadMessageDAO : BaseDAO() {
     }
 
     @Throws(Exception::class)
-    internal fun createMessageWithAIByIdThread(idProfileSender: Int?, idThread: Int?, message: String?): Int {
+    internal fun createMessageWithAIByIdThread(idProfileSender: String?, idThread: String?, message: String?): Int {
         if (idThread.toString().isNotBlank()) {
             val messageOfBoot = callDialogFlow(idProfileSender.toString(), idThread, sessionId = idProfileSender.toString(), message = message.toString())
             Thread(Runnable {
@@ -99,7 +99,7 @@ class ThreadMessageDAO : BaseDAO() {
     }
 
     @Throws(Exception::class)
-    internal fun callDialogFlow(idProfileSender: String, idThread: Int?, projectId: String = EntitiesTable.PROJECT_DIALOG_FLOW, sessionId: String,
+    internal fun callDialogFlow(idProfileSender: String, idThread: String?, projectId: String = EntitiesTable.PROJECT_DIALOG_FLOW, sessionId: String,
                                 message: String): String? {
         val credentials = GoogleCredentials.fromStream(ClassPathResource("tutor-api.json").inputStream)
         val sessionsSettings = SessionsSettings.newBuilder()
@@ -168,7 +168,7 @@ class ThreadMessageDAO : BaseDAO() {
         }
     }
 
-    private fun pushNotificationToDeviceForProfile(idProfileSender: Int?, idThread: Int?, message: String?): HttpEntity<String> {
+    private fun pushNotificationToDeviceForProfile(idProfileSender: String?, idThread: String?, message: String?): HttpEntity<String> {
         var nameSender = ""
         var tokenDevice = ""
 

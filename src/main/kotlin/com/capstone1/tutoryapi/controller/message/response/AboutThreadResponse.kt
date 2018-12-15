@@ -1,4 +1,4 @@
-package com.capstone1.tutoryapi.controller.message
+package com.capstone1.tutoryapi.controller.message.response
 
 /**
  * Create by Nguyen Van Phuc on 2018-12-10
