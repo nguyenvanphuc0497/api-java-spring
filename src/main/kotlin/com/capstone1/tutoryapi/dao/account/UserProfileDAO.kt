@@ -60,11 +60,22 @@ class UserProfileDAO : BaseDAO() {
         return UserProfile()
     }
 
-    internal fun findAllAddressUserByIdProfile(): List<AddressUserProfile> {
+    internal fun findAllAddressUser(): List<AddressUserProfile> {
         val sql = "SELECT up.ID_PROFILE, up.NAME, up.SO_NHA, up.URL_AVATAR, up.STATUS, xp.name AS Phuong, qh.name AS Quan, tp.name AS City " +
                 "FROM ${EntitiesTable.userProfile} AS up " +
                 "INNER JOIN ${EntitiesTable.xaPhuong} AS xp ON up.ID_ADDRESS = xp.xaid INNER JOIN ${EntitiesTable.quanHuyen} AS qh ON xp.maqh = qh.maqh " +
                 "INNER JOIN ${EntitiesTable.city} AS tp ON qh.matp = tp.matp "
+        return jdbcTemplate.query(sql, AddressUserProfileMapper())
+    }
+
+    internal fun findAllAddressUserByIdCity(idCity: String?): List<AddressUserProfile>? {
+        if (idCity.isNullOrBlank()){
+            return null
+        }
+        val sql = "SELECT up.ID_PROFILE, up.NAME, up.SO_NHA, up.URL_AVATAR, up.STATUS, xp.name AS Phuong, qh.name AS Quan, tp.name AS City " +
+                "FROM ${EntitiesTable.userProfile} AS up " +
+                "INNER JOIN ${EntitiesTable.xaPhuong} AS xp ON up.ID_ADDRESS = xp.xaid INNER JOIN ${EntitiesTable.quanHuyen} AS qh ON xp.maqh = qh.maqh " +
+                "INNER JOIN ${EntitiesTable.city} AS tp ON qh.matp = tp.matp WHERE tp.matp = '$idCity'"
         return jdbcTemplate.query(sql, AddressUserProfileMapper())
     }
 
