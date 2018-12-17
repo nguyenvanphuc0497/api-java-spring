@@ -3,6 +3,7 @@ package com.capstone1.tutoryapi.controller
 import com.capstone1.tutoryapi.dao.account.TypeUserDAO
 import com.capstone1.tutoryapi.dao.account.UserProfileDAO
 import com.capstone1.tutoryapi.dao.message.ThreadMessageDAO
+import com.capstone1.tutoryapi.dao.other.OtherDAO
 import com.capstone1.tutoryapi.dao.posts.PostsDAO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.RequestMapping
@@ -26,4 +27,7 @@ class BaseController {
 
     @Autowired
     protected lateinit var threadMessageDAO: ThreadMessageDAO
+
+    @Autowired
+    protected lateinit var otherDAO: OtherDAO
 }

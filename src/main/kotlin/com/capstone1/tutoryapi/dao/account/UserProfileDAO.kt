@@ -2,10 +2,7 @@ package com.capstone1.tutoryapi.dao.account
 
 import com.capstone1.tutoryapi.dao.BaseDAO
 import com.capstone1.tutoryapi.entities.EntitiesTable
-import com.capstone1.tutoryapi.entities.account.AboutUserProfile
-import com.capstone1.tutoryapi.entities.account.AboutUserProfileMapper
-import com.capstone1.tutoryapi.entities.account.UserProfile
-import com.capstone1.tutoryapi.entities.account.UserProfileMapper
+import com.capstone1.tutoryapi.entities.account.*
 import org.springframework.stereotype.Repository
 
 /**
@@ -61,6 +58,25 @@ class UserProfileDAO : BaseDAO() {
             return result[0] ?: UserProfile()
         }
         return UserProfile()
+    }
+
+    internal fun findAllAddressUser(): List<AddressUserProfile> {
+        val sql = "SELECT up.ID_PROFILE, up.NAME, up.SO_NHA, up.URL_AVATAR, up.STATUS, xp.name AS Phuong, qh.name AS Quan, tp.name AS City " +
+                "FROM ${EntitiesTable.userProfile} AS up " +
+                "INNER JOIN ${EntitiesTable.xaPhuong} AS xp ON up.ID_ADDRESS = xp.xaid INNER JOIN ${EntitiesTable.quanHuyen} AS qh ON xp.maqh = qh.maqh " +
+                "INNER JOIN ${EntitiesTable.city} AS tp ON qh.matp = tp.matp "
+        return jdbcTemplate.query(sql, AddressUserProfileMapper())
+    }
+
+    internal fun findAllAddressUserByIdCity(idCity: String?): List<AddressUserProfile>? {
+        if (idCity.isNullOrBlank()){
+            return null
+        }
+        val sql = "SELECT up.ID_PROFILE, up.NAME, up.SO_NHA, up.URL_AVATAR, up.STATUS, xp.name AS Phuong, qh.name AS Quan, tp.name AS City " +
+                "FROM ${EntitiesTable.userProfile} AS up " +
+                "INNER JOIN ${EntitiesTable.xaPhuong} AS xp ON up.ID_ADDRESS = xp.xaid INNER JOIN ${EntitiesTable.quanHuyen} AS qh ON xp.maqh = qh.maqh " +
+                "INNER JOIN ${EntitiesTable.city} AS tp ON qh.matp = tp.matp WHERE tp.matp = '$idCity'"
+        return jdbcTemplate.query(sql, AddressUserProfileMapper())
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.capstone1.tutoryapi.controller.account
 
 import com.capstone1.tutoryapi.controller.BaseController
+import com.capstone1.tutoryapi.controller.account.response.AddressUserProfileResponse
 import com.capstone1.tutoryapi.controller.account.response.UserProfileResponse
 import org.springframework.web.bind.annotation.*
 
@@ -11,7 +12,8 @@ import org.springframework.web.bind.annotation.*
 class UserProfileController : BaseController() {
 
     @PostMapping("/account/authentication", consumes = ["application/json", "multipart/form-data"])
-    internal fun accountAuthentication(@RequestBody body: Map<String, String>) = userProfileDAO.accountAuthentication(body["user_name"], body["password"], body["fcm_token_device"])
+    internal fun accountAuthentication(@RequestBody body: Map<String, String>) =
+            userProfileDAO.accountAuthentication(body["user_name"], body["password"], body["fcm_token_device"])
 
     @PostMapping("/account/logout", consumes = ["application/json", "multipart/form-data"])
     internal fun logoutAccount(@RequestBody body: Map<String, String>) = userProfileDAO.accountLogout(body["id_user"])
@@ -35,4 +37,11 @@ class UserProfileController : BaseController() {
     @GetMapping("/user/profile/")
     internal fun getUserProfileByIdProfile(@RequestParam("id") idProfile: String?) =
             userProfileDAO.findAboutUserByIdProfile(idProfile)
+
+    @GetMapping("/user/profile/address")
+    internal fun getListAddressUser() = AddressUserProfileResponse(userProfileDAO.findAllAddressUser())
+
+    @GetMapping("/user/profile/address/")
+    internal fun getListAddressUserByIdCiry(@RequestParam("id_city") idCity: String?) =
+            AddressUserProfileResponse(userProfileDAO.findAllAddressUserByIdCity(idCity))
 }
