@@ -15,6 +15,6 @@ class PostsController : BaseController() {
     @GetMapping("/post")
     internal fun viewPost() = PostsResponse(postsDAO.selectAddPostAvailbel())
 
-    @GetMapping("/post/user")
+    @GetMapping("/post/user/")
     internal fun viewPostByIdProfile(@RequestParam("id") idProfile: String?) = PostsResponse(postsDAO.selectPostAvailbelByIdProfile(idProfile))
 }
