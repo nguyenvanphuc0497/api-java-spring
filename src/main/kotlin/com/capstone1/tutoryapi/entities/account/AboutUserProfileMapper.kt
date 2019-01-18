@@ -9,10 +9,10 @@ import java.sql.ResultSet
 class AboutUserProfileMapper : RowMapper<AboutUserProfile> {
     override fun mapRow(rs: ResultSet, rowNum: Int): AboutUserProfile? = AboutUserProfile(rs.getString("ID_PROFILE")?.trim(),
             rs.getString("NAME")?.trim(),
+            rs.getString("STATUS")?.trim(),
             rs.getString("BIRTHDAY")?.trim(),
             rs.getString("SEX")?.trim(),
             rs.getString("PHONE")?.trim(),
-            rs.getString("STATUS")?.trim(),
             rs.getString("URL_AVATAR")?.trim(),
             rs.getString("EMAIL")?.trim(),
             rs.getString("SO_NHA")?.trim(),
